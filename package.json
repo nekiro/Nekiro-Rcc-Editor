@@ -1,0 +1,41 @@
+{
+  "name": "nekiros_rcc_editor",
+  "version": "1.0.0",
+  "description": "edit qt .rcc files",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "Nekiro",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^13.0.1",
+    "electron-builder": "^22.10.5"
+  },
+  "build": {
+    "appId": "com.electron.nekiros_rcc_editor",
+    "icon": "./assets/icon.ico",
+    "win": {
+      "target": {
+        "target": "nsis",
+        "arch": [
+          "x64",
+          "ia32"
+        ]
+      },
+      "extraResources": [
+        "rcc"
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  },
+  "dependencies": {
+    "bluebird": "^3.7.2",
+    "fs-extra": "^10.0.0"
+  }
+}
