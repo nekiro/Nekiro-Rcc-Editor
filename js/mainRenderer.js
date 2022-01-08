@@ -15,7 +15,7 @@ preview.addEventListener("drop", (event) => {
 
   ipcRenderer.send("replace-image", {
     index: parseInt(focused.id.split("-")[1]),
-    path: fevent.dataTransfer.files[0].path,
+    path: event.dataTransfer.files[0].path,
   });
 });
 
