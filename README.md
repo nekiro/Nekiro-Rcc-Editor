@@ -22,3 +22,7 @@ Enjoy.
 ## Donate
 
 If you like my work and respect my time, consider becoming [Github Sponsor](https://github.com/sponsors/nekiro).
+
+
+### Credits
+- [rccextended](https://github.com/zedxxx/rccextended) for awesome QT rcc lib
