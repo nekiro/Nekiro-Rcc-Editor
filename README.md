@@ -1,23 +1,35 @@
 # Nekiro's Rcc Editor
 
-You need nodejs and npm installed.
+Nekiro's Rcc Editor is easy to use tool that allows you to replace assets in compiled qt resource files .rcc.
 
-### How to use?
+Framework: Electron
 
-- Navigate to project directory
-- npm i
-- npm run start
+Languages: html, js, css
 
-To compile write
+## Features
 
-- npm run dist
+- Load rcc
+- Compile rcc
+- Replace images
+- Extract assets
 
-Compiled binaries are located in "dist" directory.
-By default both win32 and x64 versions are being compiled
+## Installation
 
-If you don't want to compile, download latest version from releases.
+Nekiro's Rcc Editor requires [Node.js](https://nodejs.org/) to run.
+Install the dependencies and start the main script.
 
-Enjoy.
+```sh
+cd nekiro-rcc-editor
+npm i
+npm run start
+```
+
+## Compilation
+Follow above instructions, but instead of **start** write **build**, build files are written to /dist directory
+
+```sh
+npm run build
+```
 
 ## Donate
 
