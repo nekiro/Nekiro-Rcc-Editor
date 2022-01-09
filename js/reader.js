@@ -78,7 +78,7 @@ const extractToPng = async (directoryPath) => {
 
   for (const image of images) {
     if (image.isImage) {
-      await fs.outputFile(path.join(directoryPath.image.path), image.data);
+      await fs.outputFile(path.join(directoryPath, image.path), image.data);
     }
   }
 
