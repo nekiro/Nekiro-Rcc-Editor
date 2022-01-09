@@ -2,20 +2,14 @@ const { dialog, BrowserWindow, app } = require("electron");
 const path = require("path");
 const util = require("util");
 const execFile = util.promisify(require("child_process").execFile);
-
-const Promise = require("bluebird");
-const fs = Promise.promisifyAll(require("fs-extra"));
+const fs = require("fs-extra");
 
 let loadedFilePath = null;
 let images = [];
 
-const getResourcePath = () => {
-  if (app.isPackaged) {
-    return process.resourcesPath;
-  } else {
-    return ".";
-  }
-};
+const imageExt = [".png", ".jpg"];
+
+const resourcePath = app.isPackaged ? process.resourcesPath : ".";
 
 const getFiles = async (path = "./") => {
   const entries = await fs.readdir(path, { withFileTypes: true });
@@ -31,30 +25,35 @@ const getFiles = async (path = "./") => {
 };
 
 const loadRcc = async (filePath) => {
-  const localPath = `${path.resolve(getResourcePath(), "rcc")}`;
+  const localPath = `${path.resolve(resourcePath, "rcc")}`;
 
   // clear previous images
   images = [];
 
   // delete res directory
   try {
-    await fs.rmdir(`${localPath}/qresource`, { recursive: true });
+    await fs.rmdir(path.join(localPath, "qresource"), { recursive: true });
   } catch {}
 
-  await fs.copyFile(filePath, `${localPath}/res.rcc`);
+  await fs.copyFile(filePath, path.join(localPath, "res.rcc"));
 
-  const result = await execFile(`${localPath}/rcc.exe`, ["--reverse"], {
+  await execFile(path.join(localPath, "rcc.exe"), ["--reverse"], {
     cwd: `${localPath}/`,
   });
 
   // get directory content
-  const files = await getFiles(`${localPath}/qresource/res/res.rcc`);
+  const files = await getFiles(
+    path.join(localPath, "qresource", "res", "res.rcc")
+  );
+
   for (const file of files) {
-    const ext = path.extname(file.path);
     images.push({
       name: path.parse(file.name).name,
-      path: path.relative(`${localPath}/qresource/res/res.rcc`, file.path),
-      isImage: ext === ".png" || ext === ".jpg",
+      path: path.relative(
+        path.join(localPath, "qresource", "res", "res.rcc"),
+        file.path
+      ),
+      isImage: imageExt.includes(path.extname(file.path)),
       data: Buffer.from(await fs.readFile(file.path, "binary"), "binary"),
     });
   }
@@ -63,8 +62,8 @@ const loadRcc = async (filePath) => {
   images.sort((a, b) => a.name.localeCompare(b.name));
 
   // cleanup
-  await fs.rmdir(`${localPath}/qresource`, { recursive: true });
-  await fs.rm(`${localPath}/res.rcc`);
+  await fs.rmdir(path.join(localPath, "qresource"), { recursive: true });
+  await fs.rm(path.join(localPath, "res.rcc"));
 
   loadedFilePath = filePath;
 
@@ -72,14 +71,14 @@ const loadRcc = async (filePath) => {
 };
 
 const extractToPng = async (directoryPath) => {
-  if (images.length === 0) {
+  if (!images.length) {
     dialog.showErrorBox("Error", "Nothing to extract.");
     return;
   }
 
   for (const image of images) {
     if (image.isImage) {
-      await fs.outputFileAsync(`${directoryPath}/${image.path}`, image.data);
+      await fs.outputFile(`${directoryPath}/${image.path}`, image.data);
     }
   }
 
@@ -89,14 +88,12 @@ const extractToPng = async (directoryPath) => {
   });
 };
 
-const saveRcc = async (filePath) => {
+const saveRcc = async (filePath = loadedFilePath) => {
   if (images.length === 0) {
     return;
   }
 
-  filePath = filePath || loadedFilePath;
-
-  const localPath = `${path.resolve(getResourcePath(), "rcc")}`;
+  const localPath = path.resolve(resourcePath, "rcc");
 
   // create .qrc file
   let data = `<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n`;
@@ -107,15 +104,15 @@ const saveRcc = async (filePath) => {
 
   data += `</qresource>\n</RCC>`;
 
-  await fs.outputFileAsync(`${localPath}/res/res.qrc`, data);
+  await fs.outputFile(path.join(localPath, "res", "res.qrc"), data);
 
   // dump images
   for (const image of images) {
-    await fs.outputFileAsync(`${localPath}/res/${image.path}`, image.data);
+    await fs.outputFile(path.join(localPath, "res", image.path), image.data);
   }
 
-  const result = await execFile(
-    `${localPath}/rcc.exe`,
+  await execFile(
+    path.join(localPath, "rcc.exe"),
     [
       "--format-version",
       "1",
@@ -129,10 +126,12 @@ const saveRcc = async (filePath) => {
     }
   );
 
-  await fs.move("./rcc/res/res_output.rcc", `${filePath}`, { overwrite: true });
+  await fs.move("./rcc/res/res_output.rcc", filePath, { overwrite: true });
 
   // cleanup
-  await fs.rmdir(`${localPath}/res`, { recursive: true });
+  await fs.rmdir(path.join(localPath, "res"), {
+    recursive: true,
+  });
 
   dialog.showMessageBox(null, {
     message: `Rcc saved successfully.`,

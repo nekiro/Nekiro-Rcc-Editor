@@ -41,15 +41,13 @@ ipcRenderer.on("populate-list", (event, images) => {
     list.removeChild(list.firstChild);
   }
 
-  for (let index = 0; index < images.length; ++index) {
-    const image = images[index];
-
+  for (const [index, image] of images.entries()) {
     if (!image.isImage) {
       continue;
     }
 
-    let btn = document.createElement("button");
-    btn.innerText = `${image.name}`;
+    const btn = document.createElement("button");
+    btn.innerText = image.name;
     btn.id = `btn-${index}`;
     btn.onclick = (event) => {
       if (focused == event.target) {
@@ -65,7 +63,7 @@ ipcRenderer.on("populate-list", (event, images) => {
       ipcRenderer.send("get-image-data", index);
     };
 
-    let img = document.createElement("img");
+    const img = document.createElement("img");
     img.className = "miniature";
     img.src = `data:image/png;base64,${Buffer.from(image.data).toString(
       "base64"
