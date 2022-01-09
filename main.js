@@ -1,6 +1,6 @@
-const { app, Menu, BrowserWindow, dialog, shell } = require("electron");
-const { loadRcc, saveRcc, extractToPng } = require("./js/reader");
-require("./js/ipcMain");
+const { app, Menu, BrowserWindow, dialog, shell } = require('electron');
+const { loadRcc, saveRcc, extractToPng } = require('./js/reader');
+require('./js/ipcMain');
 
 const createMainWindow = () => {
   const mainWindow = new BrowserWindow({
@@ -16,11 +16,11 @@ const createMainWindow = () => {
 
   const template = [
     {
-      label: "Load rcc",
+      label: 'Load rcc',
       click: async () => {
         const result = await dialog.showOpenDialog(mainWindow, {
-          properties: ["openFile"],
-          filters: [{ name: "Rcc File Type", extensions: ["rcc"] }],
+          properties: ['openFile'],
+          filters: [{ name: 'Rcc File Type', extensions: ['rcc'] }],
         });
 
         if (!result.canceled) {
@@ -29,10 +29,10 @@ const createMainWindow = () => {
       },
     },
     {
-      label: "Extract assets",
+      label: 'Extract assets',
       click: async () => {
         const result = await dialog.showOpenDialog(mainWindow, {
-          properties: ["openDirectory", "createDirectory"],
+          properties: ['openDirectory', 'createDirectory'],
         });
 
         if (!result.canceled) {
@@ -41,14 +41,14 @@ const createMainWindow = () => {
       },
     },
     {
-      label: "Save rcc",
+      label: 'Save rcc',
       click: () => saveRcc(),
     },
     {
-      label: "Save rcc as",
+      label: 'Save rcc as',
       click: async () => {
         const result = await dialog.showSaveDialog(mainWindow, {
-          filters: [{ name: "Rcc File Type", extensions: ["rcc"] }],
+          filters: [{ name: 'Rcc File Type', extensions: ['rcc'] }],
         });
 
         if (!result.canceled) {
@@ -57,8 +57,8 @@ const createMainWindow = () => {
       },
     },
     {
-      label: "Donate",
-      click: () => shell.openExternal("https://github.com/sponsors/nekiro"),
+      label: 'Donate',
+      click: () => shell.openExternal('https://github.com/sponsors/nekiro'),
     },
   ];
 
@@ -67,25 +67,25 @@ const createMainWindow = () => {
 
   mainWindow.loadURL(`file://${__dirname}/html/index.html`);
 
-  mainWindow.webContents.once("did-finish-load", () => {
+  mainWindow.webContents.once('did-finish-load', () => {
     mainWindow.show();
   });
 
   // Open the DevTools.
-  //mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   return mainWindow;
 };
 
 app.whenReady().then(() => {
   createMainWindow();
 
-  app.on("activate", function () {
+  app.on('activate', () => {
     // On macOS it's common to re-create a window in the app when the
     // dock icon is clicked and there are no other windows open.
-    if (BrowserWindow.getAllWindows().length === 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createMainWindow();
   });
 });
 
-app.on("window-all-closed", function () {
-  if (process.platform !== "darwin") app.quit();
+app.on('window-all-closed', () => {
+  if (process.platform !== 'darwin') app.quit();
 });

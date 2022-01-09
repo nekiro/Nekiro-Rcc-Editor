@@ -11,8 +11,7 @@
   "author": "Nekiro",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^13.0.1",
-    "electron-builder": "^22.10.5"
+    "prettier": "^2.5.1"
   },
   "build": {
     "appId": "com.electron.nekiros_rcc_editor",
@@ -35,6 +34,8 @@
     }
   },
   "dependencies": {
+    "electron": "^13.0.1",
+    "electron-builder": "^22.10.5",
     "fs-extra": "^10.0.0"
   }
 }

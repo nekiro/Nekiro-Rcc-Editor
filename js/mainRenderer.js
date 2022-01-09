@@ -1,11 +1,11 @@
 //renderer process
-const { ipcRenderer } = require("electron");
+const { ipcRenderer } = require('electron');
 
-const preview = document.querySelector(".preview");
-const list = document.querySelector(".list");
+const preview = document.querySelector('.preview');
+const list = document.querySelector('.list');
 let focused = null;
 
-preview.addEventListener("drop", (event) => {
+preview.addEventListener('drop', (event) => {
   event.preventDefault();
   event.stopPropagation();
 
@@ -13,28 +13,28 @@ preview.addEventListener("drop", (event) => {
     return;
   }
 
-  ipcRenderer.send("replace-image", {
-    index: parseInt(focused.id.split("-")[1]),
+  ipcRenderer.send('replace-image', {
+    index: parseInt(focused.id.split('-')[1], 10),
     path: event.dataTransfer.files[0].path,
   });
 });
 
-preview.addEventListener("dragover", (e) => {
+preview.addEventListener('dragover', (e) => {
   e.preventDefault();
   e.stopPropagation();
 });
 
-ipcRenderer.on("update-preview", (event, data) => {
-  preview.src = `data:image/png;base64,${Buffer.from(data).toString("base64")}`;
+ipcRenderer.on('update-preview', (event, data) => {
+  preview.src = `data:image/png;base64,${Buffer.from(data).toString('base64')}`;
 });
 
-ipcRenderer.on("update-miniature", (event, { index, data }) => {
+ipcRenderer.on('update-miniature', (event, { index, data }) => {
   list.querySelector(
     `#btn-${index} > img`
-  ).src = `data:image/png;base64,${Buffer.from(data).toString("base64")}`;
+  ).src = `data:image/png;base64,${Buffer.from(data).toString('base64')}`;
 });
 
-ipcRenderer.on("populate-list", (event, images) => {
+ipcRenderer.on('populate-list', (event, images) => {
   focused = null;
 
   while (list.firstChild) {
@@ -46,7 +46,7 @@ ipcRenderer.on("populate-list", (event, images) => {
       continue;
     }
 
-    const btn = document.createElement("button");
+    const btn = document.createElement('button');
     btn.innerText = image.name;
     btn.id = `btn-${index}`;
     btn.onclick = (event) => {
@@ -55,18 +55,18 @@ ipcRenderer.on("populate-list", (event, images) => {
       }
 
       if (focused) {
-        focused.classList.remove("focused");
+        focused.classList.remove('focused');
       }
 
       focused = event.target;
-      focused.classList.add("focused");
-      ipcRenderer.send("get-image-data", index);
+      focused.classList.add('focused');
+      ipcRenderer.send('get-image-data', index);
     };
 
-    const img = document.createElement("img");
-    img.className = "miniature";
+    const img = document.createElement('img');
+    img.className = 'miniature';
     img.src = `data:image/png;base64,${Buffer.from(image.data).toString(
-      "base64"
+      'base64'
     )}`;
     btn.appendChild(img);
 
