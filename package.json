@@ -4,10 +4,10 @@
   "description": "edit qt .rcc files",
   "main": "build/App.js",
   "scripts": {
-    "start": "electron-forge start",
+    "start": "npm run compile && electron-forge start",
+    "build": "npm run compile && electron-forge make",
     "compile": "tsc && copyfiles src/html/*.html src/css/*.css src/assets/* src/rcc/rcc.exe build",
-    "package": "electron-forge package",
-    "build": "npm run compile && electron-forge make"
+    "package": "electron-forge package"
   },
   "author": "Nekiro",
   "license": "MIT",

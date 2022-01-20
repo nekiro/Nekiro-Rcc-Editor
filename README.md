@@ -16,12 +16,11 @@ Languages: html, typescript, css
 ## Installation
 
 Nekiro's Rcc Editor requires [Node.js](https://nodejs.org/) to run.
-Install the dependencies and start the main script.
+Install the dependencies and start.
 
 ```sh
 cd nekiro-rcc-editor
 npm i
-npm run compile
 npm run start
 ```
 

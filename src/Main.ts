@@ -1,12 +1,11 @@
 import { BrowserWindow, Menu, dialog, shell, app } from 'electron';
-import { loadRcc, saveRcc, extractToPng } from './reader';
 import path from 'path';
-require('./ipc/main');
+import RccLib from './RccLib';
+import './ipc/Main';
 
 export default class Main {
   static mainWindow: Electron.BrowserWindow;
   static application: Electron.App;
-  static BrowserWindow: any;
 
   private static onWindowAllClosed() {
     if (process.platform !== 'darwin') {
@@ -15,7 +14,7 @@ export default class Main {
   }
 
   private static createWindow() {
-    Main.mainWindow = new Main.BrowserWindow({
+    Main.mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
       webPreferences: {
@@ -41,7 +40,7 @@ export default class Main {
             });
 
           if (!result.canceled) {
-            loadRcc(result.filePaths.pop() ?? null);
+            RccLib.loadRcc(result.filePaths.pop());
           }
         },
       },
@@ -54,13 +53,13 @@ export default class Main {
             });
 
           if (!result.canceled) {
-            extractToPng(result.filePaths.pop() ?? null);
+            RccLib.extractToPng(result.filePaths.pop());
           }
         },
       },
       {
         label: 'Save rcc',
-        click: () => saveRcc(),
+        click: () => RccLib.saveRcc(),
       },
       {
         label: 'Save rcc as',
@@ -70,7 +69,7 @@ export default class Main {
           });
 
           if (!result.canceled) {
-            saveRcc(result.filePath);
+            RccLib.saveRcc(result.filePath);
           }
         },
       },
@@ -95,13 +94,12 @@ export default class Main {
       Main.mainWindow.show();
     });
 
-    //Main.mainWindow.webContents.openDevTools();
+    Main.mainWindow.webContents.openDevTools();
   }
 
-  static main(app: Electron.App, browserWindow: typeof BrowserWindow) {
-    if (require('electron-squirrel-startup')) return;
+  static main() {
+    if (require('electron-squirrel-startup')) return; // fixes launching app during installation/uninstallation
 
-    Main.BrowserWindow = browserWindow;
     Main.application = app;
     Main.application.on('window-all-closed', Main.onWindowAllClosed);
     Main.application.on('ready', Main.onReady);

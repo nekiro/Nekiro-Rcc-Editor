@@ -1,35 +1,33 @@
 //renderer process
 import { ipcRenderer } from 'electron';
-import { ImageBuffer } from '../types';
+import { ImageBuffer } from '../Types';
 
 const preview: any = document.querySelector('.preview');
 const list: any = document.querySelector('.list');
 let focused: any = null;
 
-if (preview) {
-  preview.addEventListener('drop', (event: any) => {
-    event.preventDefault();
-    event.stopPropagation();
+preview?.addEventListener('drop', (event: any) => {
+  event.preventDefault();
+  event.stopPropagation();
 
-    if (!focused) {
-      return;
-    }
+  if (!focused) {
+    return;
+  }
 
-    ipcRenderer.send('replace-image', {
-      index: parseInt(focused.id.split('-')[1], 10),
-      path: event.dataTransfer.files[0].path,
-    });
+  ipcRenderer.send('replace-image', {
+    index: parseInt(focused.id.split('-')[1], 10),
+    path: event.dataTransfer.files[0].path,
   });
+});
 
-  preview.addEventListener('dragover', (event: any) => {
-    event.preventDefault();
-    event.stopPropagation();
-  });
-}
+preview?.addEventListener('dragover', (event: any) => {
+  event.preventDefault();
+  event.stopPropagation();
+});
 
 ipcRenderer.on(
   'update-preview',
-  (event: Electron.IpcRendererEvent, data: Buffer) => {
+  (_: Electron.IpcRendererEvent, data: Buffer) => {
     if (preview) {
       preview.src = `data:image/png;base64,${Buffer.from(data).toString(
         'base64'
@@ -40,7 +38,7 @@ ipcRenderer.on(
 
 ipcRenderer.on(
   'update-miniature',
-  (event: Electron.IpcRendererEvent, { index, data }: ImageBuffer) => {
+  (_: Electron.IpcRendererEvent, { index, data }: ImageBuffer) => {
     list.querySelector(
       `#btn-${index} > img`
     ).src = `data:image/png;base64,${Buffer.from(data).toString('base64')}`;
@@ -49,7 +47,7 @@ ipcRenderer.on(
 
 ipcRenderer.on(
   'populate-list',
-  (event: Electron.IpcRendererEvent, images: any[]) => {
+  (_: Electron.IpcRendererEvent, images: any[]) => {
     focused = null;
 
     while (list.firstChild) {
