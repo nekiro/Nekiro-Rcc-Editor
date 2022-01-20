@@ -99,6 +99,8 @@ export default class Main {
   }
 
   static main(app: Electron.App, browserWindow: typeof BrowserWindow) {
+    if (require('electron-squirrel-startup')) return;
+
     Main.BrowserWindow = browserWindow;
     Main.application = app;
     Main.application.on('window-all-closed', Main.onWindowAllClosed);

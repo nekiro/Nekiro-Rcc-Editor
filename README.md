@@ -4,7 +4,7 @@ Nekiro's Rcc Editor is easy to use tool that allows you to replace assets in com
 
 Framework: Electron
 
-Languages: html, js, css
+Languages: html, typescript, css
 
 ## Features
 
@@ -27,7 +27,7 @@ npm run start
 
 ## Compilation
 
-Follow above instructions, but instead of **start** write **build**, build files are written to /dist directory
+Follow above instructions, but instead of **start** write **build**, build files are written to /out directory
 
 ```sh
 npm run build
