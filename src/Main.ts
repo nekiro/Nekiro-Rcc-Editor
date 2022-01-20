@@ -94,7 +94,8 @@ export default class Main {
       Main.mainWindow.show();
     });
 
-    Main.mainWindow.webContents.openDevTools();
+    // dev tools
+    //Main.mainWindow.webContents.openDevTools();
   }
 
   static main() {
