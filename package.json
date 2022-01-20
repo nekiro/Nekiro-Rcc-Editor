@@ -1,41 +1,45 @@
 {
-  "name": "nekiros_rcc_editor",
+  "name": "nekirosrcceditor",
   "version": "1.0.0",
   "description": "edit qt .rcc files",
-  "main": "main.js",
+  "main": "build/App.js",
   "scripts": {
-    "start": "electron .",
-    "pack": "electron-builder --dir",
-    "build": "electron-builder"
+    "start": "electron-forge start",
+    "compile": "tsc && copyfiles src/html/*.html src/css/*.css src/assets/* src/rcc/rcc.exe build",
+    "package": "electron-forge package",
+    "build": "npm run compile && electron-forge make"
   },
   "author": "Nekiro",
   "license": "MIT",
   "devDependencies": {
-    "prettier": "^2.5.1"
-  },
-  "build": {
-    "appId": "com.electron.nekiros_rcc_editor",
-    "icon": "./assets/icon.ico",
-    "win": {
-      "target": {
-        "target": "nsis",
-        "arch": [
-          "x64",
-          "ia32"
-        ]
-      },
-      "extraResources": [
-        "rcc"
-      ]
-    },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    }
+    "@electron-forge/cli": "^6.0.0-beta.63",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+    "@tsconfig/recommended": "^1.0.1",
+    "@types/electron": "^1.6.10",
+    "@types/fs-extra": "^9.0.13",
+    "electron": "^13.0.1",
+    "prettier": "^2.5.1",
+    "typescript": "^4.5.4"
   },
   "dependencies": {
-    "electron": "^13.0.1",
-    "electron-builder": "^22.10.5",
+    "electron-squirrel-startup": "^1.0.0",
     "fs-extra": "^10.0.0"
+  },
+  "config": {
+    "forge": {
+      "packagerConfig": {
+        "icon": "./build/src/assets/icon.ico",
+        "extraResource": "./build/src/rcc",
+        "asar": true
+      },
+      "makers": [
+        {
+          "name": "@electron-forge/maker-squirrel",
+          "config": {
+            "name": "NekirosRccEditor"
+          }
+        }
+      ]
+    }
   }
 }

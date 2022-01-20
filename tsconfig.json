@@ -1,0 +1,13 @@
+{
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "compilerOptions": {
+    "target": "es2015",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "./build",
+    "noImplicitAny": true
+  },
+  "include": ["src/**/*", "App.ts"],
+  "exclude": ["node_modules"]
+}

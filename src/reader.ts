@@ -1,31 +1,36 @@
-const { dialog, BrowserWindow, app } = require('electron');
-const path = require('path');
-const util = require('util');
+import { dialog, BrowserWindow, app } from 'electron';
+import path from 'path';
+import util from 'util';
 const execFile = util.promisify(require('child_process').execFile);
-const fs = require('fs-extra');
+import fs from 'fs-extra';
+import Main from './Main';
+import { Image } from './types';
 
-let loadedFilePath = null;
-let images = [];
+let loadedFilePath: string | null = null;
+let images: Image[] = [];
 
-const imageExt = ['.png', '.jpg'];
+const imageExt: Array<string> = ['.png', '.jpg'];
 
-const resourcePath = app.isPackaged ? process.resourcesPath : '.';
+const resourcePath: string = app.isPackaged ? process.resourcesPath : __dirname;
+const localPath: string = path.resolve(resourcePath, 'rcc');
 
 const getFiles = async (path = './') => {
   const entries = await fs.readdir(path, { withFileTypes: true });
   const files = entries
-    .filter((file) => !file.isDirectory())
-    .map((file) => ({ ...file, path: path + file.name }));
+    .filter((file: any) => !file.isDirectory())
+    .map((file: any) => ({ ...file, path: path + file.name }));
 
-  const folders = entries.filter((folder) => folder.isDirectory());
+  const folders = entries.filter((folder: any) => folder.isDirectory());
   for (const folder of folders) {
     files.push(...(await getFiles(`${path}/${folder.name}/`)));
   }
   return files;
 };
 
-const loadRcc = async (filePath) => {
-  const localPath = path.resolve(resourcePath, 'rcc');
+export async function loadRcc(filePath: string | null): Promise<void> {
+  if (!filePath) {
+    return;
+  }
 
   // clear previous images
   images = [];
@@ -42,7 +47,7 @@ const loadRcc = async (filePath) => {
   });
 
   // get directory content
-  const files = await getFiles(
+  const files: any[] = await getFiles(
     path.join(localPath, 'qresource', 'res', 'res.rcc')
   );
 
@@ -68,9 +73,11 @@ const loadRcc = async (filePath) => {
   loadedFilePath = filePath;
 
   BrowserWindow.getAllWindows()[0].webContents.send('populate-list', images);
-};
+}
 
-const extractToPng = async (directoryPath) => {
+export async function extractToPng(
+  directoryPath: string | null
+): Promise<void> {
   if (!images.length) {
     dialog.showErrorBox('Error', 'Nothing to extract.');
     return;
@@ -78,22 +85,25 @@ const extractToPng = async (directoryPath) => {
 
   for (const image of images) {
     if (image.isImage) {
-      await fs.outputFile(path.join(directoryPath, image.path), image.data);
+      await fs.outputFile(
+        path.join(directoryPath as string, image.path),
+        image.data
+      );
     }
   }
 
-  dialog.showMessageBox(null, {
+  dialog.showMessageBox(Main.mainWindow, {
     message: `Png images extracted successfully. Extracted ${images.length} images.`,
     type: 'info',
   });
-};
+}
 
-const saveRcc = async (filePath = loadedFilePath) => {
-  if (images.length === 0) {
+export async function saveRcc(
+  filePath: string | null = loadedFilePath
+): Promise<void> {
+  if (!filePath || images.length === 0) {
     return;
   }
-
-  const localPath = path.resolve(resourcePath, 'rcc');
 
   // create .qrc file
   let data = '<!DOCTYPE RCC><RCC version="1.0">\n<qresource>\n';
@@ -126,20 +136,25 @@ const saveRcc = async (filePath = loadedFilePath) => {
     }
   );
 
-  await fs.move('./rcc/res/res_output.rcc', filePath, { overwrite: true });
+  await fs.move(path.join(localPath, '/res/res_output.rcc'), filePath, {
+    overwrite: true,
+  });
 
   // cleanup
   await fs.rmdir(path.join(localPath, 'res'), {
     recursive: true,
   });
 
-  dialog.showMessageBox(null, {
+  dialog.showMessageBox(Main.mainWindow, {
     message: 'Rcc saved successfully.',
     type: 'info',
   });
-};
+}
 
-const replaceImage = async (index, filePath) => {
+export async function replaceImage(
+  index: number,
+  filePath: string
+): Promise<Buffer | null> {
   const image = images[index];
   if (!image) {
     return null;
@@ -147,14 +162,8 @@ const replaceImage = async (index, filePath) => {
 
   image.data = Buffer.from(await fs.readFile(filePath, 'binary'), 'binary');
   return image.data;
-};
+}
 
-const getImageByIndex = (index) => images[index]?.data;
-
-module.exports = {
-  loadRcc,
-  saveRcc,
-  replaceImage,
-  getImageByIndex,
-  extractToPng,
-};
+export function getImageByIndex(index: number): Buffer {
+  return images[index]?.data;
+}
