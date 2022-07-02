@@ -2,7 +2,7 @@
   "name": "nekirosrcceditor",
   "version": "1.0.0",
   "description": "edit qt .rcc files",
-  "main": "build/App.js",
+  "main": "build/app.js",
   "scripts": {
     "start": "npm run compile && electron-forge start",
     "build": "npm run compile && electron-forge make",
