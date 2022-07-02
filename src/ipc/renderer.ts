@@ -1,6 +1,6 @@
 //renderer process
 import { ipcRenderer } from 'electron';
-import { ImageBuffer } from '../Types';
+import ImageBuffer from '../types/imageBuffer';
 
 const preview: any = document.querySelector('.preview');
 const list: any = document.querySelector('.list');

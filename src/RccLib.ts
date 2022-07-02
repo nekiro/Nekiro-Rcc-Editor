@@ -3,8 +3,8 @@ import path from 'path';
 import util from 'util';
 const execFile = util.promisify(require('child_process').execFile);
 import fs from 'fs-extra';
-import Main from './Main';
-import { Image } from './Types';
+import Main from './main';
+import Image from './types/image';
 
 const imageExt: Array<string> = ['.png', '.jpg'];
 

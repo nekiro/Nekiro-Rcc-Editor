@@ -8,6 +8,6 @@
     "outDir": "./build",
     "noImplicitAny": true
   },
-  "include": ["src/**/*", "App.ts"],
+  "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
 }

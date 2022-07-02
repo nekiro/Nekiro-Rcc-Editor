@@ -1,7 +1,7 @@
 import { BrowserWindow, Menu, dialog, shell, app } from 'electron';
 import path from 'path';
-import RccLib from './RccLib';
-import './ipc/Main';
+import RccLib from './rccLib';
+import './ipc/main';
 
 export default class Main {
   static mainWindow: Electron.BrowserWindow;

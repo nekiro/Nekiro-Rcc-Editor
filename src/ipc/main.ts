@@ -1,5 +1,5 @@
 const { ipcMain } = require('electron');
-import RccLib from '../RccLib';
+import RccLib from '../rccLib';
 
 ipcMain.on('get-image-data', (event: Electron.IpcMainEvent, index: number) => {
   event.reply('update-preview', RccLib.getImageByIndex(index));

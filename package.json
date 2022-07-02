@@ -6,7 +6,7 @@
   "scripts": {
     "start": "npm run compile && electron-forge start",
     "build": "npm run compile && electron-forge make",
-    "compile": "tsc && copyfiles src/html/*.html src/css/*.css src/assets/* src/rcc/rcc.exe build",
+    "compile": "rimraf build && tsc && copyfiles src/html/*.html src/css/*.css src/assets/* src/rcc/rcc.exe build",
     "package": "electron-forge package"
   },
   "author": "Nekiro",
@@ -17,8 +17,10 @@
     "@tsconfig/recommended": "^1.0.1",
     "@types/electron": "^1.6.10",
     "@types/fs-extra": "^9.0.13",
+    "copyfiles": "^2.4.1",
     "electron": "^13.0.1",
     "prettier": "^2.5.1",
+    "rimraf": "^3.0.2",
     "typescript": "^4.5.4"
   },
   "dependencies": {
