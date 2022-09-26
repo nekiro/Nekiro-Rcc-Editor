@@ -33,7 +33,7 @@ npm run start
 Follow above instructions, but instead of **start** write **build**, build files are written to /out directory
 
 ```sh
-npm run build
+npm run make
 ```
 
 ## Donate
