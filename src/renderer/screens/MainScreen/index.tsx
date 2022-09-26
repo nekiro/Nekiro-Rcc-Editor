@@ -3,15 +3,18 @@ import SelectableList from '../../components/SelectableList';
 import styles from './style.css';
 import { Image } from '../../../types/Image';
 import Preview from '../../components/Preview';
-import useSelectedElement from '../../hooks/useSelectedElement';
+import useSelectedElement from '../../../renderer/hooks/useSelectedElement';
 
 export default function MainScreen() {
   const [images, setImages] = useState<Image[]>([]);
-  const [selectedElement] = useSelectedElement();
+  const [, setElement] = useSelectedElement();
 
   useEffect(() => {
     window.api.handlers.listImages.subscribe(
-      (_: Electron.IpcRendererEvent, images: Image[]) => setImages(images),
+      (_: Electron.IpcRendererEvent, images: Image[]) => {
+        setElement();
+        setImages(images);
+      },
     );
     window.api.handlers.listImage.subscribe(
       (_: Electron.IpcRendererEvent, index: number, image: Image) =>
@@ -32,7 +35,7 @@ export default function MainScreen() {
       <div
         className={`${styles['center-container']} ${styles['miniature-holder']}`}
       >
-        <Preview visible={!!selectedElement} />
+        <Preview />
       </div>
     </div>
   );

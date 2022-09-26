@@ -2,13 +2,7 @@ import React from 'react';
 import useSelectedElement from '../../hooks/useSelectedElement';
 import styles from './style.css';
 
-type PreviewProps = {
-  visible: boolean;
-};
-
-export default function Preview({
-  visible,
-}: PreviewProps & React.ImgHTMLAttributes<HTMLImageElement>) {
+export default function Preview() {
   const [selected, setSelected] = useSelectedElement();
 
   const onDropToPreview = async (event: React.DragEvent<HTMLImageElement>) => {
@@ -34,7 +28,7 @@ export default function Preview({
     <img
       onDrop={onDropToPreview}
       onDragOver={onDragOverToPreview}
-      className={`${styles.preview} ${visible ? styles.visible : ''}`}
+      className={`${styles.preview} ${selected.element ? styles.visible : ''}`}
       src={
         selected.element ? `data:image/png;base64,${selected.image?.data}` : ''
       }

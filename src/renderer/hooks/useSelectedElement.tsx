@@ -8,7 +8,7 @@ import { Image } from '../../types/Image';
 
 type SelectedElementContext = [
   { element?: HTMLButtonElement; image?: Image },
-  (element: HTMLButtonElement, image: Image) => void,
+  (element?: HTMLButtonElement, image?: Image) => void,
 ];
 
 const context = createContext<SelectedElementContext>([{}, () => true]);
@@ -19,7 +19,7 @@ export const SelectedElementProvider = ({ children }: PropsWithChildren) => {
     image?: Image;
   }>({});
 
-  const setElement = (element: HTMLButtonElement, image: Image) =>
+  const setElement = (element?: HTMLButtonElement, image?: Image) =>
     setElementState({
       element,
       image,
