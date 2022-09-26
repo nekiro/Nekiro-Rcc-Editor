@@ -1,47 +1,100 @@
 {
-  "name": "nekirosrcceditor",
-  "version": "1.0.0",
+  "name": "rcc-editor",
+  "productName": "rcc-editor",
+  "version": "2.0.0",
   "description": "edit qt .rcc files",
-  "main": "build/app.js",
+  "main": ".webpack/main",
   "scripts": {
-    "start": "npm run compile && electron-forge start",
-    "build": "npm run compile && electron-forge make",
-    "compile": "rimraf build && tsc && copyfiles src/html/*.html src/css/*.css src/assets/* src/rcc/rcc.exe build",
-    "package": "electron-forge package"
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx ."
   },
-  "author": "Nekiro",
+  "author": {
+    "name": "Marcin Jałocha",
+    "email": "nekiro.dev@gmail.com"
+  },
   "license": "MIT",
-  "devDependencies": {
-    "@electron-forge/cli": "^6.0.0-beta.63",
-    "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
-    "@tsconfig/recommended": "^1.0.1",
-    "@types/electron": "^1.6.10",
-    "@types/fs-extra": "^9.0.13",
-    "copyfiles": "^2.4.1",
-    "electron": "^13.0.1",
-    "prettier": "^2.5.1",
-    "rimraf": "^3.0.2",
-    "typescript": "^4.5.4"
-  },
-  "dependencies": {
-    "electron-squirrel-startup": "^1.0.0",
-    "fs-extra": "^10.0.0"
-  },
   "config": {
     "forge": {
       "packagerConfig": {
-        "icon": "./build/src/assets/icon.ico",
-        "extraResource": "./build/src/rcc",
+        "icon": "./assets/icon.ico",
+        "extraResource": "./rcc",
         "asar": true
       },
       "makers": [
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "NekirosRccEditor"
+            "name": "rcc_editor"
           }
+        },
+        {
+          "name": "@electron-forge/maker-zip",
+          "platforms": [
+            "darwin"
+          ]
+        },
+        {
+          "name": "@electron-forge/maker-deb",
+          "config": {}
+        },
+        {
+          "name": "@electron-forge/maker-rpm",
+          "config": {}
         }
+      ],
+      "plugins": [
+        [
+          "@electron-forge/plugin-webpack",
+          {
+            "mainConfig": "./webpack.main.config.js",
+            "renderer": {
+              "config": "./webpack.renderer.config.js",
+              "entryPoints": [
+                {
+                  "html": "./src/renderer/index.html",
+                  "js": "./src/renderer/app.tsx",
+                  "name": "main_window",
+                  "preload": {
+                    "js": "./src/renderer/preload.ts"
+                  }
+                }
+              ]
+            }
+          }
+        ]
       ]
     }
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@electron-forge/cli": "^6.0.0-beta.66",
+    "@electron-forge/maker-deb": "^6.0.0-beta.66",
+    "@electron-forge/maker-rpm": "^6.0.0-beta.66",
+    "@electron-forge/maker-squirrel": "^6.0.0-beta.66",
+    "@electron-forge/maker-zip": "^6.0.0-beta.66",
+    "@electron-forge/plugin-webpack": "6.0.0-beta.66",
+    "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
+    "@types/react": "^18.0.21",
+    "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "@vercel/webpack-asset-relocator-loader": "1.7.3",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.0.0",
+    "electron": "20.2.0",
+    "eslint": "^8.0.1",
+    "eslint-plugin-import": "^2.25.0",
+    "fork-ts-checker-webpack-plugin": "^7.2.1",
+    "node-loader": "^2.0.0",
+    "style-loader": "^3.0.0",
+    "ts-loader": "^9.2.2",
+    "typescript": "~4.5.4"
   }
 }

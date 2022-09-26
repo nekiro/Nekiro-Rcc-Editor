@@ -1,0 +1,8 @@
+.miniature {
+  width: auto;
+  height: auto;
+  max-width: 40px;
+  justify-self: start;
+  max-height: 30px;
+  object-fit: contain;
+}

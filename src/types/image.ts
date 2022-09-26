@@ -1,8 +1,6 @@
-type Image = {
+export type Image = {
   name: string;
+  fullName: string;
   path: string;
-  isImage: boolean;
-  data: Buffer;
+  data: Buffer | string;
 };
-
-export default Image;

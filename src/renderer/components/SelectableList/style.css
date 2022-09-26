@@ -1,0 +1,32 @@
+.list {
+  background-color: #393e46;
+  border: 1px solid black;
+  overflow: auto;
+  overflow-x: hidden;
+}
+
+.list button {
+  text-align: end;
+  width: 100%;
+  min-height: 30px;
+  max-height: 200px;
+  border: transparent;
+  border-bottom: 1px solid black;
+  background: transparent;
+  color: lightgray;
+  display: grid;
+  grid-template-columns: 80% 20%;
+  align-items: center;
+  column-gap: 10px;
+  justify-content: center;
+}
+
+.list button:hover {
+  color: gold;
+  background-color: #222831;
+}
+
+.selected {
+  background-color: #222831 !important;
+  color: gold !important;
+}

@@ -1,0 +1,9 @@
+.preview {
+  background-color: #393e46;
+  padding: 25px;
+  display: none;
+}
+
+.visible {
+  display: block;
+}
