@@ -1,6 +1,6 @@
 # Nekiro's Rcc Editor
 
-Nekiro's Rcc Editor is easy to use tool that allows you to replace and export assets in compiled qt resource files .rcc.
+Nekiro's Rcc Editor is easy to use tool that allows to replace and export assets in compiled qt resource files .rcc.
 
 ## Stack
 
