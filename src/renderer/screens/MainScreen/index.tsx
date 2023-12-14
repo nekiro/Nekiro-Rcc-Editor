@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import SelectableList from '../../components/SelectableList';
 import styles from './style.css';
-import { Image } from '../../../types/Image';
+import { Image } from '../../../types/image';
 import Preview from '../../components/Preview';
 import useSelectedElement from '../../../renderer/hooks/useSelectedElement';
 

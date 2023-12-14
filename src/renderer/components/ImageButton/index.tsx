@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './style.css';
-import { Image } from '../../../types/Image';
+import { Image } from '../../../types/image';
 
 type ImageButtonProps = {
   image: Image;
