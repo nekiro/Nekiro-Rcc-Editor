@@ -1,7 +1,7 @@
 import React from 'react';
 import ImageButton from '../ImageButton';
 import styles from './style.css';
-import { Image } from '../../../types/Image';
+import { Image } from '../../../types/image';
 import useSelectedElement from '../../hooks/useSelectedElement';
 
 type SelectableListProps = {

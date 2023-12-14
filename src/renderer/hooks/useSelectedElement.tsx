@@ -4,7 +4,7 @@ import React, {
   useContext,
   useState,
 } from 'react';
-import { Image } from '../../types/Image';
+import { Image } from '../../types/image';
 
 type SelectedElementContext = [
   { element?: HTMLButtonElement; image?: Image },
