@@ -4,7 +4,7 @@ Nekiro's Rcc Editor is easy to use tool that allows to replace and export assets
 
 ## Stack
 
-[![Skills](https://skills.thijs.gg/icons?i=ts,nodejs,react,html,css,electron&theme=light&perline=5)](https://github.com/nekiro)
+[![Skills](https://go-skill-icons.vercel.app/api/icons?i=ts,nodejs,react,css,electron&theme=light&perline=5)](https://github.com/nekiro)
 
 ## Features
 

@@ -2,7 +2,7 @@ import { app } from 'electron';
 import path from 'path';
 import { execFile as execFileSync, ExecFileOptions } from 'child_process';
 import fs from 'fs/promises';
-import { Image } from '../types/Image';
+import { Image } from '../types/image';
 
 const images: Image[] = [];
 const localPath = path.resolve(
