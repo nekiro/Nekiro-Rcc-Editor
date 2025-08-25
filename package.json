@@ -16,15 +16,6 @@
 		"email": "nekiro.dev@gmail.com"
 	},
 	"license": "MIT",
-	"config": {
-		"forge": {
-			"packagerConfig": {
-				"icon": "./assets/icon.ico",
-				"extraResource": "./rcc",
-				"asar": true
-			}
-		}
-	},
 	"dependencies": {
 		"electron-squirrel-startup": "^1.0.0",
 		"rcc-editor": "file:",
