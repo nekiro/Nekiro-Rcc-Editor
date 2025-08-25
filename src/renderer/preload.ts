@@ -14,6 +14,7 @@ const handlers: RendererHandlers = {
 
 const api: MainApi = {
 	replaceImage: (index: number, path: string) => ipcRenderer.invoke("list:replace-image", index, path),
+	replaceImageWithData: (index: number, data: ArrayBuffer) => ipcRenderer.invoke("list:replace-image-data", index, data),
 	getImages: () => ipcRenderer.invoke("list:images"),
 	handlers,
 };

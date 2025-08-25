@@ -158,8 +158,29 @@ export const replaceImage = async (index: number, filePath: string) => {
 		return null;
 	}
 
-	image.data = Buffer.from(await fs.readFile(filePath, "binary"), "binary"); // TODO check this
-	return image;
+	try {
+		const fileBuffer = await fs.readFile(filePath);
+		image.data = fileBuffer;
+		return image;
+	} catch (error) {
+		console.error("Error reading file:", error);
+		return null;
+	}
+};
+
+export const replaceImageWithData = async (index: number, data: ArrayBuffer) => {
+	const image = getImageByIndex(index);
+	if (!image) {
+		return null;
+	}
+
+	try {
+		image.data = Buffer.from(data);
+		return image;
+	} catch (error) {
+		console.error("Error setting image data:", error);
+		return null;
+	}
 };
 
 export const getImageByIndex = (index: number) => {

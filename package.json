@@ -1,7 +1,7 @@
 {
 	"name": "rcc-editor",
 	"productName": "rcc-editor",
-	"version": "2.2.0",
+	"version": "2.2.1",
 	"description": "edit qt .rcc files",
 	"main": ".webpack/main",
 	"scripts": {

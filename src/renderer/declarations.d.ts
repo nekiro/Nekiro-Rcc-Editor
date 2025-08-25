@@ -13,15 +13,16 @@ export type RendererHandlers = {
 
 export interface MainApi {
 	replaceImage: (index: number, path: string) => Promise<Image>;
+	replaceImageWithData: (index: number, data: ArrayBuffer) => Promise<Image>;
 	getImages: () => Promise<Image[]>;
 	handlers: RendererHandlers;
 }
 
 export type Image = {
 	name: string;
+	fullName: string;
 	path: string;
-	isImage: boolean;
-	data: Buffer;
+	data: Buffer | string;
 };
 
 declare global {
