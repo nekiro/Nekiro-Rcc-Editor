@@ -1,19 +1,19 @@
 .main {
-  background-color: #222831;
-  display: grid;
-  height: 100vh;
-  grid-template-columns: 1fr 4fr;
-  user-select: none;
+	background-color: #222831;
+	display: grid;
+	height: 100vh;
+	grid-template-columns: 1fr 4fr;
+	user-select: none;
 }
 
 .center-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 }
 
 .miniature-holder {
-  overflow: auto;
-  margin-left: 30px;
-  margin-right: 30px;
+	overflow: auto;
+	margin-left: 30px;
+	margin-right: 30px;
 }
