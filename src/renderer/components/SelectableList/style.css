@@ -9,7 +9,6 @@
 	text-align: end;
 	width: 100%;
 	min-height: 30px;
-	max-height: 200px;
 	border: transparent;
 	border-bottom: 1px solid black;
 	background: transparent;
@@ -19,6 +18,10 @@
 	align-items: center;
 	column-gap: 10px;
 	justify-content: center;
+	word-wrap: break-word;
+	word-break: break-word;
+	white-space: normal;
+	overflow: visible;
 }
 
 .list button:hover {

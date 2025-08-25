@@ -2,7 +2,7 @@
 	background-color: #222831;
 	display: grid;
 	height: 100vh;
-	grid-template-columns: 1fr 4fr;
+	grid-template-columns: 1fr 2fr;
 	user-select: none;
 }
 

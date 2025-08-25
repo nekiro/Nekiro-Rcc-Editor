@@ -3,6 +3,7 @@ import path from "path";
 import { execFile as execFileSync, ExecFileOptions } from "child_process";
 import fs from "fs/promises";
 import { Image } from "../types/image";
+import { getPlatformType, PlatformType } from "./util";
 
 const images: Image[] = [];
 const localPath = path.resolve(app.isPackaged ? process.resourcesPath : __dirname, "rcc");
@@ -57,9 +58,13 @@ export const loadRcc = async (filePath?: string) => {
 	// copy to directory
 	await fs.copyFile(filePath, path.join(localPath, "res.rcc"));
 
-	await execFile(path.join(localPath, "rcc.exe"), ["--reverse"], {
+	const binary = getPlatformType() === PlatformType.x64 ? "rcc-x64.exe" : "rcc-x86.exe";
+
+	const result = await execFile(path.join(localPath, binary), ["--reverse"], {
 		cwd: `${localPath}/`,
 	});
+
+	console.log(result);
 
 	const files = await getAllFiles(path.join(qresourcePath, "res", "res.rcc"));
 	if (!files) return [];
@@ -107,17 +112,16 @@ export const saveRcc = async (filePath: string | undefined = loadedFilePath) => 
 
 	await fs.writeFile(path.join(localPath, "qresource", "res", "res.qrc"), data);
 
-	console.log(localPath);
+	const binary = getPlatformType() === PlatformType.x64 ? "rcc-x64.exe" : "rcc-x86.exe";
 
-	await execFile(
-		path.join(localPath, "rcc.exe"),
+	const result = await execFile(
+		path.join(localPath, binary),
 		["--format-version", "1", "--binary", "./qresource/res/res.qrc", "-o", "./qresource/res_output.rcc"],
 		{
 			cwd: `${localPath}/`,
 		},
 	);
-
-	console.log(path.join(localPath, "res_output.rcc"));
+	console.log(result);
 
 	await fs.cp(path.join(localPath, "qresource", "res_output.rcc"), filePath, {
 		force: true,
